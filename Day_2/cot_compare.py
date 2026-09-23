@@ -1,10 +1,6 @@
 """Day 2, Part B: the same question asked WITHOUT and WITH Chain-of-Thought."""
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Day_1')))
-
 from config import client, MODEL, banner
-
+ 
 QUESTIONS = [
     # 1. Multi-step arithmetic
     "A student takes three courses costing Rs. 12,000, Rs. 18,000 and Rs. 15,000. "
@@ -17,13 +13,13 @@ QUESTIONS = [
     "Ravi is taller than Kumar. Kumar is taller than Arun. Priya is shorter than Arun. "
     "Who is the tallest and who is the shortest?",
 ]
-
+ 
 DIRECT_PROMPT = "You are a helpful assistant. Give only the final answer. Do not explain."
-
+ 
 COT_PROMPT = ("You are a helpful assistant. Solve the problem step by step. "
               "Number each step and show the calculation in that step. "
               "After the steps, write the last line exactly as: Final Answer: <answer>")
-
+ 
 def ask(system_prompt, question):
     response = client.chat.completions.create(
         model=MODEL,
@@ -32,7 +28,7 @@ def ask(system_prompt, question):
         temperature=0,
     )
     return response.choices[0].message.content.strip()
-
+ 
 if __name__ == "__main__":
     banner("CHAIN-OF-THOUGHT COMPARISON")
     for number, question in enumerate(QUESTIONS, start=1):
@@ -42,3 +38,4 @@ if __name__ == "__main__":
         print(ask(DIRECT_PROMPT, question), "\n")
         print("--- WITH CoT ---")
         print(ask(COT_PROMPT, question), "\n")
+
